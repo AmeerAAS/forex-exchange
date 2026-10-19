@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forex Exchange</title>
+</head>
+<body>
+    <h1>Forex Rates</h1>
+    <div id="rates">Loading rates...</div>
+
+    <script>
+        // Fetch rates from the Express backend endpoint
+        fetch('/api/rates')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('rates');
+                let html = `<h3>Base: ${data.base}</h3><ul>`;
+                for (const [currency, rate] of Object.entries(data.rates)) {
+                    html += `<li><strong>${currency}:</strong> ${rate}</li>`;
+                }
+                html += '</ul>';
+                container.innerHTML = html;
+            })
+            .catch(err => {
+                document.getElementById('rates').innerText = 'Error loading exchange rates.';
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
